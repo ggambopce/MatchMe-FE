@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:matchme_fe/providers/profile_provider.dart';
+import 'package:provider/provider.dart';
+import 'screens/profile_edit_screen.dart';
 
 void main() {
-  runApp(const MatchMeApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ProfileProvider(),
+      child: const MatchMeApp(),
+    ),
+  );
 }
 
 class MatchMeApp extends StatelessWidget {
@@ -14,10 +22,11 @@ class MatchMeApp extends StatelessWidget {
       title: 'MatchMeApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFEAEBDD), // 배경색
-        fontFamily: 'Arial',
+        scaffoldBackgroundColor: const Color(0xEDEFE3), // 배경색
+        fontFamily: 'RoadRage',
       ),
-      home: const SplashScreen(),
+      home: const ProfileEditScreen(),
+      //const SplashScreen(),
     );
   }
 }
