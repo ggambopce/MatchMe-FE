@@ -22,7 +22,7 @@ class MatchMeApp extends StatelessWidget {
       title: 'MatchMeApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xEDEFE3), // 배경색
+        scaffoldBackgroundColor: const Color(0xFFEDEFE3), // 배경색
         fontFamily: 'RoadRage',
       ),
       home: const ProfileEditScreen(),

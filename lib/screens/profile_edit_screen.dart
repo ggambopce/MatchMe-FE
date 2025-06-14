@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/profile_provider.dart';
 
 class ProfileEditScreen extends StatelessWidget {
@@ -55,7 +54,7 @@ class ProfileEditScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text('4기질    에니어그램'),
+                  const Text('4기질         에니어그램'),
                 ],
               ),
             ),
@@ -73,14 +72,71 @@ class ProfileEditScreen extends StatelessWidget {
             const Text('대표 요소'),
             Wrap(
               spacing: 8,
-              children: provider.allTags.map((tag) {
-                final selected = provider.selectedTags.contains(tag);
-                return ChoiceChip(
-                  label: Text(tag),
-                  selected: selected,
-                  onSelected: (_) => provider.toggleTag(tag),
+              runSpacing: 8,
+              children: List.generate(provider.tagControllers.length, (index) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: SizedBox(
+                    width: 80,
+                    height: 32,
+                    child: TextFormField(
+                      controller: provider.tagControllers[index],
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        hintText: '직업',
+                        border: InputBorder.none,
+                        isCollapsed: true,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                );
+              }),
+            ),
+            const SizedBox(height: 24),
+            const Text('성별'),
+            DropdownButton<String>(
+              value: provider.gender,
+              items: ['male', 'female'].map((value) {
+                return DropdownMenuItem(
+                  value: value,
+                  child: Text(value == 'male' ? '남성' : '여성'),
                 );
               }).toList(),
+              onChanged: (value) => provider.setGender(value!),
+            ),
+            const SizedBox(height: 12),
+            const Text('직업'),
+            TextFormField(
+              controller: provider.jobController,
+              decoration: const InputDecoration(hintText: '직업을 입력해주세요'),
+            ),
+            const SizedBox(height: 12),
+            const Text('활동 지역'),
+            TextFormField(
+              controller: provider.locationController,
+              decoration: const InputDecoration(hintText: '예: 대전 서구'),
+            ),
+            const SizedBox(height: 12),
+            const Text('관계 의도'),
+            TextFormField(
+              controller: provider.relationshipController,
+              decoration: const InputDecoration(hintText: '예: 진지한 연애'),
+            ),
+            const SizedBox(height: 12),
+            const Text('생년월일'),
+            TextFormField(
+              controller: provider.birthDateController,
+              decoration: const InputDecoration(hintText: '예: 2001-03-02'),
             ),
             const SizedBox(height: 24),
             const Text('수락 시 보여줄 요소'),
@@ -131,16 +187,33 @@ class ProfileEditScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomAppBar(
-        height: 56,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Icon(Icons.person),
-            Icon(Icons.edit),
-            Icon(Icons.favorite),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // 아이템 4개 이상일 때 고정
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black54,
+        backgroundColor: const Color(0xFFEDEFE3), // 하단 배경색
+        currentIndex: 1, // '내 정보' 탭 강조 표시
+        onTap: (index) {
+          // 탭 전환 시 동작할 로직 여기에 작성
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail_outline),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline),
+            label: '내 정보',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_none),
+            label: '알림',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.group_outlined),
+            label: 'MatchMe',
+          ),
+        ],
       ),
     );
   }
