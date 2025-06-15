@@ -91,7 +91,7 @@ class ProfileEditScreen extends StatelessWidget {
                       controller: provider.tagControllers[index],
                       textAlign: TextAlign.center,
                       decoration: const InputDecoration(
-                        hintText: '직업',
+                        hintText: '입력',
                         border: InputBorder.none,
                         isCollapsed: true,
                         contentPadding: EdgeInsets.zero,

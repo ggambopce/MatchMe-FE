@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:matchme_fe/providers/profile_provider.dart';
+import 'package:matchme_fe/providers/profile_view_provider.dart';
 import 'package:provider/provider.dart';
 import 'screens/profile_edit_screen.dart';
+import 'screens/profile_view_screens.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ProfileProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileViewProvider()),
+      ],
       child: const MatchMeApp(),
     ),
   );
@@ -25,7 +30,7 @@ class MatchMeApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEDEFE3), // 배경색
         fontFamily: 'RoadRage',
       ),
-      home: const ProfileEditScreen(),
+      home: const ProfileViewScreen(),
       //const SplashScreen(),
     );
   }
