@@ -83,7 +83,7 @@ class ProfileProvider extends ChangeNotifier {
       "user_choice_list": userChoiceList,
     };
 
-    print('✅ 제출 JSON:');
+    print('제출 JSON:');
     print(payload);
   }
 

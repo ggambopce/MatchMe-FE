@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:matchme_fe/providers/metch_me_info_provider.dart';
-import 'package:matchme_fe/providers/profile_provider.dart';
+import 'package:matchme_fe/providers/match_me_info_provider.dart';
+import 'package:matchme_fe/providers/match_me_start_provider.dart';
+import 'package:matchme_fe/providers/match_profile_view_provider.dart';
+import 'package:matchme_fe/providers/profile_edit_provider.dart';
 import 'package:matchme_fe/providers/profile_view_provider.dart';
 import 'package:matchme_fe/screens/match_me_info_screen.dart';
+import 'package:matchme_fe/screens/match_me_start_screen.dart';
+import 'package:matchme_fe/screens/match_profile_view_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/profile_edit_screen.dart';
-import 'screens/profile_view_screens.dart';
+import 'screens/profile_view_screen.dart';
 
 void main() {
   runApp(
@@ -14,6 +18,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => MatchMeInfoProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => ProfileViewProvider()),
+        ChangeNotifierProvider(create: (_) => MatchProfileViewProvider()),
+        ChangeNotifierProvider(create: (_) => MatchMeStartProvider()),
       ],
       child: const MatchMeApp(),
     ),
@@ -33,28 +39,8 @@ class MatchMeApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEDEFE3), // 배경색
         fontFamily: 'RoadRage',
       ),
-      home: const MatchMeInfoScreen(),
+      home: const ProfileViewScreen(),
       //const SplashScreen(),
-    );
-  }
-}
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Match Me',
-          style: TextStyle(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
-          ),
-        ),
-      ),
     );
   }
 }

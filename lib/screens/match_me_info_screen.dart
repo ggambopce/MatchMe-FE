@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:matchme_fe/providers/metch_me_info_provider.dart';
+import 'package:matchme_fe/providers/match_me_info_provider.dart';
 import 'package:provider/provider.dart';
 
 class MatchMeInfoScreen extends StatelessWidget {
