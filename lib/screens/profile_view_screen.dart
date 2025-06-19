@@ -29,7 +29,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
     final profile = provider.profile;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('내 프로필 화면'), centerTitle: true),
+      backgroundColor: const Color(0xFFEDEFE3),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

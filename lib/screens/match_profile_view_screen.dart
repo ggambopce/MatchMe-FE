@@ -33,13 +33,6 @@ class _MatchProfileViewScreenState extends State<MatchProfileViewScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFEDEFE3),
-      appBar: AppBar(
-        title: const Text('받은 프로필 스크린 내부 정보'),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFEDEFE3),
-        elevation: 0,
-        foregroundColor: Colors.black,
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

@@ -10,7 +10,6 @@ class MatchProfile {
   final String job;
   final String profileImageUrl;
   final String location;
-  final String wing;
   final String relationshipIntent;
   final String temperamentReport;
   final int matchScore;
@@ -26,7 +25,6 @@ class MatchProfile {
     required this.job,
     required this.profileImageUrl,
     required this.location,
-    required this.wing,
     required this.relationshipIntent,
     required this.temperamentReport,
     required this.matchScore,
@@ -44,7 +42,6 @@ class MatchProfile {
       job: json['job'],
       profileImageUrl: json['profile_image_url'],
       location: json['location'],
-      wing: json['wing'],
       relationshipIntent: json['relationship_intent'],
       temperamentReport: json['temperament_report'],
       matchScore: json['match_score'],
@@ -65,8 +62,9 @@ class MatchProfileViewProvider extends ChangeNotifier {
           _profile!.job,
           _profile!.age,
           _profile!.relationshipIntent,
-          _profile!.wing,
           _profile!.location,
+          _profile!.temperament,
+          _profile!.enneagram,
         ];
 
   Future<void> fetchMatchProfile() async {
@@ -77,20 +75,19 @@ class MatchProfileViewProvider extends ChangeNotifier {
         "profile_id": 1,
         "nickname": "Dana Levi",
         "temperament": "Curious",
-        "enneagram": "탐구자",
-        "introduction": "나는 누구와 함께 성장하고 싶어요. 관계를 가볍게 소비하고 싶진 않아요.",
+        "enneagram": "Inquirer",
+        "introduction":
+            "나는 누군가와 함께 성장하고 싶어요. 관계를 가볍게 소비하고 싶진 않아요. 대화가 잘 통하는 사람과의 연결, 그게 제일 큰 설렘이에요.",
         "age": "30대 초",
         "job": "디자이너",
         "profile_image_url": "https://i.pravatar.cc/300?img=5",
         "location": "대전 서구",
-        "wing": "9w1",
         "relationship_intent": "진지한 연애",
-        "temperament_report": "뇌: 도파민 시스템\n특징: 새로운 자극과 경험에 강하게 끌림...",
+        "temperament_report":
+            "저는 세상과 사람을 탐험하는 걸 사랑합니다. 새로움에 대한 호기심이 가득하고, 늘 새로운 경험과 도전을 즐깁니다. 즉흥적인 여행, 낯선 장소에서의 모험, 예상치 못한 이야기를 만들어가는 걸 좋아해요. 감정 표현에 솔직하고 상대방과 함께 설레는 경험을 공유하는 걸 소중히 여깁니다. 단조로운 일상보다는 특별한 순간들을 함께 만들어가는 파트너를 찾고 있어요. 인생을 재미있게, 가슴 뛰게 만들어갈 누군가와 만나고 싶습니다.",
         "match_score": 77,
         "match_report":
-            "두 분은 감정과 생각의 밸런스가 잘 맞는 조합이에요.\n"
-            "갈등보다 대화로 조율할 수 있는 힘이 있는 궁합입니다.\n"
-            "대화 팁: 요즘 가장 몰입하는 일이 뭐예요?",
+            "협상가형의 감성적 교감과 탐험가형의 생동감 넘치는 에너지가 만나 신선하고 따뜻한 관계가 됩니다. 협상가형은 안정된 정서를, 탐험가형은 활기찬 변화를 선물합니다. 가끔 탐험가형의 즉흥성이 협상가형을 불안하게 할 수 있어 감정적인 확인과 소통이 중요합니다.",
       };
 
       _profile = MatchProfile.fromJson(mockJson);

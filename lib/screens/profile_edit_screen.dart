@@ -5,12 +5,37 @@ import '../providers/profile_edit_provider.dart';
 class ProfileEditScreen extends StatelessWidget {
   const ProfileEditScreen({super.key});
 
+  Widget _buildTagField(String label, TextEditingController controller) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade400),
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+      ),
+      child: SizedBox(
+        width: 80,
+        height: 32,
+        child: TextFormField(
+          controller: controller,
+          textAlign: TextAlign.center,
+          decoration: InputDecoration(
+            hintText: label,
+            border: InputBorder.none,
+            isCollapsed: true,
+            contentPadding: EdgeInsets.zero,
+          ),
+          style: const TextStyle(fontSize: 14),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProfileProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('프로필 작성/수정 화면'), centerTitle: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -22,22 +47,29 @@ class ProfileEditScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: provider.pickImage,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: provider.profileImageUrl.isNotEmpty
-                          ? NetworkImage(provider.profileImageUrl)
-                          : const AssetImage('assets/default_profile.png')
-                                as ImageProvider,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black38,
-                          shape: BoxShape.circle,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: provider.profileImageUrl.isNotEmpty
+                              ? NetworkImage(provider.profileImageUrl)
+                              : const AssetImage('assets/default_profile.png')
+                                    as ImageProvider,
                         ),
-                        child: const Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.black38,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -54,7 +86,10 @@ class ProfileEditScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text('4기질         에니어그램'),
+                  Text(
+                    '${provider.temperament}         ${provider.enneagram}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
                 ],
               ),
             ),
@@ -73,84 +108,32 @@ class ProfileEditScreen extends StatelessWidget {
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: List.generate(provider.tagControllers.length, (index) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
+              children: [
+                _buildTagField('직업', provider.jobController),
+                _buildTagField('생년월일', provider.birthDateController),
+                _buildTagField('활동 지역', provider.locationController),
+                _buildTagField('관계 의도', provider.relationshipController),
+                _buildTagField(
+                  '성별',
+                  TextEditingController(
+                    text: provider.gender == 'male' ? '남성' : '여성',
                   ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400),
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                  ),
-                  child: SizedBox(
-                    width: 80,
-                    height: 32,
-                    child: TextFormField(
-                      controller: provider.tagControllers[index],
-                      textAlign: TextAlign.center,
-                      decoration: const InputDecoration(
-                        hintText: '입력',
-                        border: InputBorder.none,
-                        isCollapsed: true,
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                );
-              }),
-            ),
-            const SizedBox(height: 24),
-            const Text('성별'),
-            DropdownButton<String>(
-              value: provider.gender,
-              items: ['male', 'female'].map((value) {
-                return DropdownMenuItem(
-                  value: value,
-                  child: Text(value == 'male' ? '남성' : '여성'),
-                );
-              }).toList(),
-              onChanged: (value) => provider.setGender(value!),
-            ),
-            const SizedBox(height: 12),
-            const Text('직업'),
-            TextFormField(
-              controller: provider.jobController,
-              decoration: const InputDecoration(hintText: '직업을 입력해주세요'),
-            ),
-            const SizedBox(height: 12),
-            const Text('활동 지역'),
-            TextFormField(
-              controller: provider.locationController,
-              decoration: const InputDecoration(hintText: '예: 대전 서구'),
-            ),
-            const SizedBox(height: 12),
-            const Text('관계 의도'),
-            TextFormField(
-              controller: provider.relationshipController,
-              decoration: const InputDecoration(hintText: '예: 진지한 연애'),
-            ),
-            const SizedBox(height: 12),
-            const Text('생년월일'),
-            TextFormField(
-              controller: provider.birthDateController,
-              decoration: const InputDecoration(hintText: '예: 2001-03-02'),
+                ),
+              ],
             ),
             const SizedBox(height: 24),
             const Text('수락 시 보여줄 요소'),
             TextFormField(
               controller: provider.phoneController,
-              decoration: const InputDecoration(hintText: '전화번호 (선택)'),
+              decoration: const InputDecoration(hintText: '전화번호(선택)'),
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: provider.snsController,
-              decoration: const InputDecoration(hintText: 'SNS URL (선택)'),
+              decoration: const InputDecoration(hintText: 'SNS URL(선택)'),
             ),
             const SizedBox(height: 24),
-            const Text('성향 테스트 설문'),
+            const Text('매치미 성향 테스트'),
             const SizedBox(height: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +141,7 @@ class ProfileEditScreen extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${i + 1}. ${provider.surveyQuestions[i]}'),
+                    Text('${provider.surveyQuestions[i]}'),
                     ...List.generate(provider.surveyOptions[i].length, (j) {
                       return RadioListTile<int>(
                         title: Text(provider.surveyOptions[i][j]),
@@ -187,33 +170,18 @@ class ProfileEditScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // 아이템 4개 이상일 때 고정
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black54,
-        backgroundColor: const Color(0xFFEDEFE3), // 하단 배경색
-        currentIndex: 1, // '내 정보' 탭 강조 표시
-        onTap: (index) {
-          // 탭 전환 시 동작할 로직 여기에 작성
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail_outline),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            label: '내 정보',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none),
-            label: '알림',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group_outlined),
-            label: 'MatchMe',
-          ),
-        ],
+      bottomNavigationBar: const BottomAppBar(
+        height: 56,
+        color: Color(0xFFDBEA8D),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Icon(Icons.mail_outline),
+            Icon(Icons.chat_bubble_outline),
+            Icon(Icons.notifications_none),
+            Icon(Icons.group_outlined),
+          ],
+        ),
       ),
     );
   }

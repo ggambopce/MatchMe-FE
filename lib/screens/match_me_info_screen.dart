@@ -11,13 +11,6 @@ class MatchMeInfoScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFEDEFE3),
-      appBar: AppBar(
-        title: const Text('매치미 화면'),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFEDEFE3),
-        elevation: 0,
-        foregroundColor: Colors.black,
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
