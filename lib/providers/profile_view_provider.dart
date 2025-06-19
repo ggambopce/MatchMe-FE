@@ -96,7 +96,7 @@ class ProfileViewProvider extends ChangeNotifier {
       _profile = UserProfile.fromJson(mockJson);
       notifyListeners();
     } catch (e) {
-      print('프로필 조회 실패: $e');
+      print('프로필 조회 실패 $e');
       rethrow;
     }
   }
