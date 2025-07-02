@@ -16,16 +16,18 @@ import 'package:provider/provider.dart';
 import 'screens/profile_edit_screen.dart';
 import 'screens/profile_view_screen.dart';
 
-import 'screens/profile_test_screen.dart';
+import 'app.dart';
 
+// 앱의 시작만 담당
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // 🔑 비동기 초기화 필수
 
-  // ✅ GraphQL 클라이언트 초기화
+  // GraphQL 클라이언트 초기화
   final client = await GraphQLService.initClient();
 
   runApp(
     GraphQLProvider(
+      // GraphQL 전역으로 주입
       client: client,
       child: MultiProvider(
         providers: [
@@ -39,21 +41,4 @@ void main() async {
       ),
     ),
   );
-}
-
-class MatchMeApp extends StatelessWidget {
-  const MatchMeApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MatchMeApp',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFEDEFE3),
-        fontFamily: 'RoadRage',
-      ),
-      home: const ProfileTestScreen(),
-    );
-  }
 }

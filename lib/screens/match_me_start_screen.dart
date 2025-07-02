@@ -13,9 +13,16 @@ class _MatchMeStartScreenState extends State<MatchMeStartScreen> {
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<MatchMeStartProvider>(context, listen: false);
-    provider.initialize().then((_) {
-      if (provider.isReady) {
+
+    // context 안전하게 사용
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final provider = Provider.of<MatchMeStartProvider>(
+        context,
+        listen: false,
+      );
+      await provider.initialize();
+
+      if (mounted && provider.isReady) {
         Navigator.pushReplacementNamed(context, '/match/info');
       }
     });
