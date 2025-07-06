@@ -5,6 +5,8 @@ import 'package:matchme_fe/screens/match_profile_view_screen.dart';
 import 'package:matchme_fe/screens/profile_edit_screen.dart';
 import 'package:matchme_fe/screens/profile_view_screen.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 // 앱 전체의 UI, 라우팅, 테마를 정의하는 진입 컴포넌트
 class MatchMeApp extends StatelessWidget {
   const MatchMeApp({super.key});
@@ -18,7 +20,7 @@ class MatchMeApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEDEFE3),
         fontFamily: 'RoadRage',
       ),
-      home: const MatchMeStartScreen(),
+      home: const ProfileEditScreen(),
       routes: {
         '/match/info': (context) => const MatchMeInfoScreen(),
         '/match/start': (context) => const MatchMeStartScreen(),

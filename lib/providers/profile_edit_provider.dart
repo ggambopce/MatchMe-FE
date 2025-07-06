@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:matchme_fe/app.dart';
 
 class ProfileProvider extends ChangeNotifier {
   // 기본 입력값
@@ -8,10 +10,10 @@ class ProfileProvider extends ChangeNotifier {
   final locationController = TextEditingController();
   final relationshipController = TextEditingController();
   final birthDateController = TextEditingController(); // or use DateTime picker
+  final genderController = TextEditingController();
   final phoneController = TextEditingController();
   final snsController = TextEditingController();
 
-  String gender = 'female';
   String profileImageUrl = 'https://cdn.example.com/images/me.jpg';
 
   // 설문 결과로 결정될 기질/에니어그램
@@ -55,22 +57,35 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setGender(String value) {
-    gender = value;
-    notifyListeners();
-  }
-
   void pickImage() {
-    profileImageUrl = 'https://cdn.example.com/images/placeholder.jpg';
+    profileImageUrl = 'https://randomuser.me/api/portraits/women/44.jpg';
     notifyListeners();
   }
 
-  void submitProfile() {
+  // ────────────────────────────────── GraphQL Mutation 쿼리 ──────────────────────────────────
+  static const String createProfileMutation = r'''
+    mutation CreateProfile($profile: ProfileInput!, $contact_profile: ContactProfileInput!, $user_choice_list: [UserChoiceInput!]!) {
+      createProfile(
+        profile: $profile,
+        contact_profile: $contact_profile,
+        user_choice_list: $user_choice_list
+      ) {
+        code
+        message
+      }
+    }
+  ''';
+
+  // ────────────────────────────────── 제출 ──────────────────────────────────
+  Future<void> submitProfile({
+    required void Function(String message) onError,
+    required void Function(String message) onSuccess,
+  }) async {
     final profile = {
       "nickname": nicknameController.text.trim(),
       "introduction": introductionController.text.trim(),
       "birth_date": birthDateController.text.trim(),
-      "gender": gender,
+      "gender": genderController.text.trim(),
       "job": jobController.text.trim(),
       "profile_image_url": profileImageUrl,
       "location": locationController.text.trim(),
@@ -86,14 +101,38 @@ class ProfileProvider extends ChangeNotifier {
       return {"question_number": e.key + 1, "choice_number": e.value};
     }).toList();
 
-    final payload = {
+    final variables = {
       "profile": profile,
       "contact_profile": contactProfile,
       "user_choice_list": userChoiceList,
     };
 
-    print('제출 JSON:');
-    print(payload);
+    try {
+      final client = GraphQLProvider.of(navigatorKey.currentContext!).value;
+
+      final result = await client.mutate(
+        MutationOptions(
+          document: gql(createProfileMutation),
+          variables: variables,
+        ),
+      );
+
+      if (result.hasException) {
+        debugPrint('GraphQL Error: ${result.exception}');
+        onError('제출 중 오류가 발생했습니다');
+        return;
+      }
+
+      final response = result.data?['createProfile'];
+      if (response != null && response['code'] == 200) {
+        onSuccess('프로필 등록이 완료되었습니다');
+      } else {
+        onError(response['message'] ?? '등록 실패');
+      }
+    } catch (e) {
+      debugPrint('Submit Failed: $e');
+      onError('네트워크 오류가 발생했습니다');
+    }
   }
 
   @override

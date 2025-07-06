@@ -23,7 +23,7 @@ class _MatchMeStartScreenState extends State<MatchMeStartScreen> {
       await provider.initialize();
 
       if (mounted && provider.isReady) {
-        Navigator.pushReplacementNamed(context, '/match/info');
+        Navigator.pushReplacementNamed(context, '/match/edit');
       }
     });
   }

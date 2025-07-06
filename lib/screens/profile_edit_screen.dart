@@ -31,6 +31,26 @@ class ProfileEditScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildTagText(String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade400),
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+      ),
+      child: SizedBox(
+        width: 80,
+        height: 32,
+        child: Center(child: Text(label, style: const TextStyle(fontSize: 14))),
+      ),
+    );
+  }
+
+  String genderLabel(String gender) {
+    return gender == 'male' ? '남성' : '여성';
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProfileProvider>(context);
@@ -113,12 +133,7 @@ class ProfileEditScreen extends StatelessWidget {
                 _buildTagField('생년월일', provider.birthDateController),
                 _buildTagField('활동 지역', provider.locationController),
                 _buildTagField('관계 의도', provider.relationshipController),
-                _buildTagField(
-                  '성별',
-                  TextEditingController(
-                    text: provider.gender == 'male' ? '남성' : '여성',
-                  ),
-                ),
+                _buildTagText(genderLabel(provider.genderController.text)),
               ],
             ),
             const SizedBox(height: 24),
@@ -141,7 +156,7 @@ class ProfileEditScreen extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${provider.surveyQuestions[i]}'),
+                    Text(provider.surveyQuestions[i]),
                     ...List.generate(provider.surveyOptions[i].length, (j) {
                       return RadioListTile<int>(
                         title: Text(provider.surveyOptions[i][j]),
@@ -158,7 +173,19 @@ class ProfileEditScreen extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
-              onPressed: provider.submitProfile,
+              onPressed: () => provider.submitProfile(
+                onSuccess: (msg) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(msg)));
+                  // Navigator.pushReplacementNamed(context, '/profile/view');
+                },
+                onError: (msg) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(msg)));
+                },
+              ),
               icon: const Icon(Icons.edit),
               label: const Text('제출하기'),
               style: ElevatedButton.styleFrom(
