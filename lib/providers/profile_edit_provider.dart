@@ -3,6 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:matchme_fe/app.dart';
 
 class ProfileProvider extends ChangeNotifier {
+  final String userId;
+  ProfileProvider({required this.userId});
   // 기본 입력값
   final nicknameController = TextEditingController();
   final introductionController = TextEditingController();
@@ -66,6 +68,7 @@ class ProfileProvider extends ChangeNotifier {
   static const String createProfileMutation = r'''
     mutation CreateProfile($profile: ProfileInput!, $contact_profile: ContactProfileInput!, $user_choice_list: [UserChoiceInput!]!) {
       createProfile(
+        user_id: $user_id,
         profile: $profile,
         contact_profile: $contact_profile,
         user_choice_list: $user_choice_list
@@ -102,6 +105,7 @@ class ProfileProvider extends ChangeNotifier {
     }).toList();
 
     final variables = {
+      "user_id": userId,
       "profile": profile,
       "contact_profile": contactProfile,
       "user_choice_list": userChoiceList,

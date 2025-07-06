@@ -23,7 +23,12 @@ class _MatchMeStartScreenState extends State<MatchMeStartScreen> {
       await provider.initialize();
 
       if (mounted && provider.isReady) {
-        Navigator.pushReplacementNamed(context, '/match/edit');
+        debugPrint('생성된 userId: ${provider.userId}'); // 디버깅 확인용 로그
+        Navigator.pushReplacementNamed(
+          context,
+          '/match/edit',
+          arguments: provider.userId, // 다음 화면으로 userId 전달
+        );
       }
     });
   }
