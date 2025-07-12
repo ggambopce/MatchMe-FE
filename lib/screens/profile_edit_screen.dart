@@ -141,7 +141,7 @@ class ProfileEditScreen extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${provider.surveyQuestions[i]}'),
+                    Text(provider.surveyQuestions[i]),
                     ...List.generate(provider.surveyOptions[i].length, (j) {
                       return RadioListTile<int>(
                         title: Text(provider.surveyOptions[i][j]),

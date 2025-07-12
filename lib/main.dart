@@ -4,12 +4,8 @@ import 'package:matchme_fe/providers/match_me_start_provider.dart';
 import 'package:matchme_fe/providers/match_profile_view_provider.dart';
 import 'package:matchme_fe/providers/profile_edit_provider.dart';
 import 'package:matchme_fe/providers/profile_view_provider.dart';
-import 'package:matchme_fe/screens/match_me_info_screen.dart';
-import 'package:matchme_fe/screens/match_me_start_screen.dart';
-import 'package:matchme_fe/screens/match_profile_view_screen.dart';
 import 'package:provider/provider.dart';
-import 'screens/profile_edit_screen.dart';
-import 'screens/profile_view_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(
@@ -39,7 +35,8 @@ class MatchMeApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEDEFE3), // 배경색
         fontFamily: 'RoadRage',
       ),
-      home: const ProfileEditScreen(),
+      //home: const ProfileEditScreen(),
+      home: const SplashScreen(),
       //const SplashScreen(),
     );
   }
