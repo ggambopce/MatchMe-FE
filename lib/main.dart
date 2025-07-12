@@ -1,43 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:matchme_fe/providers/match_me_info_provider.dart';
-import 'package:matchme_fe/providers/match_me_start_provider.dart';
-import 'package:matchme_fe/providers/match_profile_view_provider.dart';
-import 'package:matchme_fe/providers/profile_edit_provider.dart';
-import 'package:matchme_fe/providers/profile_view_provider.dart';
-import 'package:provider/provider.dart';
-import 'screens/splash_screen.dart';
+import 'package:matchme_fe/screens/splash_screen.dart';
+import 'pages/profile_page.dart';
+import 'pages/info_page.dart';
+import 'pages/match_page.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => MatchMeInfoProvider()),
-        ChangeNotifierProvider(create: (_) => ProfileProvider()),
-        ChangeNotifierProvider(create: (_) => ProfileViewProvider()),
-        ChangeNotifierProvider(create: (_) => MatchProfileViewProvider()),
-        ChangeNotifierProvider(create: (_) => MatchMeStartProvider()),
-      ],
-      child: const MatchMeApp(),
-    ),
-  );
-}
+void main() => runApp(const MyApp());
 
-class MatchMeApp extends StatelessWidget {
-  const MatchMeApp({super.key});
-
-  // This widget is the root of your application.
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MatchMeApp',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFEDEFE3), // 배경색
-        fontFamily: 'RoadRage',
+    return const MaterialApp(home: const SplashScreen());
+    //return const MaterialApp(home: BottomTabApp());
+  }
+}
+
+class BottomTabApp extends StatefulWidget {
+  const BottomTabApp({super.key});
+  @override
+  State<BottomTabApp> createState() => _BottomTabAppState();
+}
+
+class _BottomTabAppState extends State<BottomTabApp> {
+  int _index = 0;
+
+  final _pages = [
+    ProfilePage(),
+    MatchPage(),
+    InfoPage(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(index: _index, children: _pages),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,  // or shifting
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.amber,
+        unselectedItemColor: Colors.grey,
+        selectedFontSize: 14,
+        unselectedFontSize: 12,
+        iconSize: 30,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        currentIndex: _index,
+        onTap: (i) => setState(() => _index = i),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: '프로필'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: '매칭'),
+          BottomNavigationBarItem(icon: Icon(Icons.info), label: '정보'),
+        ],
       ),
-      //home: const ProfileEditScreen(),
-      home: const SplashScreen(),
-      //const SplashScreen(),
     );
   }
 }

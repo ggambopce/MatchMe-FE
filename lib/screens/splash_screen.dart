@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchme_fe/main.dart';
 import 'package:matchme_fe/screens/profile_edit_screen.dart';
 import 'dart:async';
 
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const ProfileEditScreen()),
+        MaterialPageRoute(builder: (_) => const BottomTabApp()),
       );
     });
   }
